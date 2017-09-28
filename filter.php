@@ -109,6 +109,8 @@ class filter_toc extends moodle_text_filter {
       global $PAGE;
       if ($PAGE->pagelayout <> "incourse")
         return $text;
+	  if (strpos($PAGE->url,"wiki")) 
+		return $text;
 	
 	  if (isset($this->localconfig['toc_headings'])) {
 		  $headings = $this->localconfig['toc_headings'];
