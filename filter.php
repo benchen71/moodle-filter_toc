@@ -136,7 +136,7 @@ class filter_toc extends moodle_text_filter {
 	  $instances = $finder->query($this->headings_filter);
 	  $lookindivs = get_config('filter_toc', 'toc_indiv');
 	  if ($instances) {
-		// Do initial pass to determine lowest heading value
+		// Do initial pass to determine highest level heading used
 		$headingsused = array();
 		foreach ($instances as $heading_instance) {
 		  if (!$this->is_within_non_toc_div($heading_instance)) {
