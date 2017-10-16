@@ -59,9 +59,10 @@ class filter_toc extends moodle_text_filter {
 		else return false;
     }	
     
-    private function add_to_heading_list($domDocument, $heading_instance)
+    private function add_to_heading_list($domDocument, $heading_instance, $highestheading)
     {
-      $heading_level = intval(substr($heading_instance->tagName, 1, 1));
+	  // Set heading level depending on the highest level heading used on the page
+      $heading_level = intval(substr($heading_instance->tagName, 1, 1)) - (intval($highestheading) - 1);
       
       // Add anchor and back-link to the heading.
       $old_contents = $domDocument->saveXML($heading_instance);
@@ -135,16 +136,32 @@ class filter_toc extends moodle_text_filter {
 	  $instances = $finder->query($this->headings_filter);
 	  $lookindivs = get_config('filter_toc', 'toc_indiv');
 	  if ($instances) {
+		// Do initial pass to determine lowest heading value
+		$headingsused = array();
+		foreach ($instances as $heading_instance) {
+		  if (!$this->is_within_non_toc_div($heading_instance)) {
+			  if ($lookindivs == 0) {
+				// Is it within a div?
+				if (!$this->is_within_div($heading_instance)) {
+					$headingsused[] = substr($heading_instance->tagName, 1, 1);
+				}
+			  } else {
+				$headingsused[] = substr($heading_instance->tagName, 1, 1);
+			  }
+		  }
+	  	}
+		$highestheading = min(array_filter($headingsused));
+		// Now build the headings list
 	    foreach ($instances as $heading_instance) {
 		  if (!$this->is_within_non_toc_div($heading_instance)) {
 			  if ($lookindivs == 0) {
 				// Is it within a div?
 				if (!$this->is_within_div($heading_instance)) {
-					$this->add_to_heading_list($dom, $heading_instance);
+					$this->add_to_heading_list($dom, $heading_instance, $highestheading);
 					$num_entries++;
 				}
 			  } else {
-				$this->add_to_heading_list($dom, $heading_instance);
+				$this->add_to_heading_list($dom, $heading_instance, $highestheading);
 				$num_entries++;
 			  }
 		  }

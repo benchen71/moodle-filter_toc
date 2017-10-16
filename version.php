@@ -28,7 +28,7 @@
  
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2017093001;
+$plugin->version  = 2017101601;
 $plugin->requires = 2011102700;  // Requires this Moodle version
 $plugin->component = 'filter_toc';
 $plugin->release = 1;
