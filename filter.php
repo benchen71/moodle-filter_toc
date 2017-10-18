@@ -62,7 +62,8 @@ class filter_toc extends moodle_text_filter {
     private function add_to_heading_list($domDocument, $heading_instance, $highestheading)
     {
 	  // Set heading level depending on the highest level heading used on the page
-      $heading_level = intval(substr($heading_instance->tagName, 1, 1)) - (intval($highestheading) - 1);
+      $heading_level = intval(substr($heading_instance->tagName, 1, 1));
+	  $toc_heading_level = intval(substr($heading_instance->tagName, 1, 1)) - (intval($highestheading) - 1);
       
       // Add anchor and back-link to the heading.
       $old_contents = $domDocument->saveXML($heading_instance);
@@ -90,7 +91,7 @@ class filter_toc extends moodle_text_filter {
       $heading_instance->parentNode->replaceChild($fragment, $heading_instance);
       
       // Add this tag to the table of contents text
-      $this->adjust_tag_level($heading_level);    
+      $this->adjust_tag_level($toc_heading_level);    
       $this->toc_text .= "<li><a href='#" . $link_name . "'>" . $heading_text . "</a></li>\n";
     }
 
