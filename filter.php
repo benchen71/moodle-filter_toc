@@ -136,9 +136,10 @@ class filter_toc extends moodle_text_filter {
 	  $finder = new DomXPath($dom);
 	  $instances = $finder->query($this->headings_filter);
 	  $lookindivs = get_config('filter_toc', 'toc_indiv');
+          $headingsused = array();
+
 	  if ($instances) {
 		// Do initial pass to determine highest level heading used
-		$headingsused = array();
 		foreach ($instances as $heading_instance) {
 		  if (!$this->is_within_non_toc_div($heading_instance)) {
 			  if ($lookindivs == 0) {
@@ -151,10 +152,12 @@ class filter_toc extends moodle_text_filter {
 			  }
 		  }
 	  	}
-		$highestheading = min(array_filter($headingsused));
-		// Now build the headings list
-	    foreach ($instances as $heading_instance) {
-		  if (!$this->is_within_non_toc_div($heading_instance)) {
+               
+                if (sizeof($headingsused)>0) {
+		    $highestheading = min(array_filter($headingsused));
+		    // Now build the headings list
+	            foreach ($instances as $heading_instance) {
+		       if (!$this->is_within_non_toc_div($heading_instance)) {
 			  if ($lookindivs == 0) {
 				// Is it within a div?
 				if (!$this->is_within_div($heading_instance)) {
@@ -165,7 +168,8 @@ class filter_toc extends moodle_text_filter {
 				$this->add_to_heading_list($dom, $heading_instance, $highestheading);
 				$num_entries++;
 			  }
-		  }
+		    }
+                }
 	  	}
       }
 
