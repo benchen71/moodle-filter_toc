@@ -22,13 +22,13 @@
  *
  * @package    filter
  * @subpackage toc
- * @copyright  2017 Melbourne School of Theology
+ * @copyright  2023 Melbourne School of Theology
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
  
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2017101901;
+$plugin->version  = 2023040100;
 $plugin->requires = 2011102700;  // Requires this Moodle version
 $plugin->component = 'filter_toc';
 $plugin->maturity = MATURITY_STABLE;
