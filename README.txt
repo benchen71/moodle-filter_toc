@@ -1,6 +1,7 @@
 Table of Contents (TOC) Filter
-2017 version
+2023 version
 ==============================
+This version has been updated so that the plugin works with Moodle 4. Note that I am unable to test this version, so please be careful implementing this on a live site!
 
 The Table of Contents filter scans pages for heading tags (like h1,
 h2, etc) and automatically generates a nested list of these tags
